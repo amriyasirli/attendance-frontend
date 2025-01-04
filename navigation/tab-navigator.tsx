@@ -1,46 +1,90 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { StackScreenProps } from '@react-navigation/stack';
 
-import { RootStackParamList } from '.';
-import { HeaderButton } from '../components/HeaderButton';
-import { TabBarIcon } from '../components/TabBarIcon';
-import One from '../screens/one';
 import Three from '../screens/three';
-import Two from '../screens/two';
+import HomeScreen from 'screens/HomeScreen/HomeScreen';
+import StudentsScreen from 'screens/StudentsScreen/StudentsScreen';
+import { Feather as Icon } from '@expo/vector-icons';
+import { Colors } from 'constants/colors';
+import MyCustomTab from './MyCustomTab';
+import { BottomNavigation } from 'react-native-paper';
+import { CommonActions } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 
-type Props = StackScreenProps<RootStackParamList, 'TabNavigator'>;
-
-export default function TabLayout({ navigation }: Props) {
+export default function TabLayout() {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: 'black',
-      }}>
+        headerShown: false,
+        tabBarHideOnKeyboard: true,
+      }}
+      tabBar={({ navigation, state, descriptors, insets }) => (
+        <BottomNavigation.Bar
+          inactiveColor={Colors.border}
+          theme={{
+            colors: {
+              elevation: {
+                level2: Colors.white, // background
+              },
+              secondaryContainer: Colors.container, // background Icon
+            },
+          }}
+          navigationState={state}
+          safeAreaInsets={insets}
+          onTabPress={({ route, preventDefault }) => {
+            const event = navigation.emit({
+              type: 'tabPress',
+              target: route.key,
+              canPreventDefault: true,
+            });
+
+            if (event.defaultPrevented) {
+              preventDefault();
+            } else {
+              navigation.dispatch({
+                ...CommonActions.navigate(route.name, route.params),
+                target: state.key,
+              });
+            }
+          }}
+          renderIcon={({ route, focused, color }) =>
+            descriptors[route.key].options.tabBarIcon?.({
+              focused,
+              color,
+              size: 24,
+            }) || null
+          }
+          getLabelText={({ route }) => descriptors[route.key].route.name}
+        />
+      )}>
       <Tab.Screen
-        name="One"
-        component={One}
+        name="Home"
+        component={HomeScreen}
         options={{
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-          headerRight: () => <HeaderButton onPress={() => navigation.navigate('Modal')} />,
+          tabBarLabel: 'Home',
+          tabBarIcon: ({ color, size, focused }) => {
+            return <Icon name="home" size={size} color={focused ? color : Colors.disabled} />;
+          },
         }}
       />
       <Tab.Screen
-        name="Two"
-        component={Two}
+        name="Siswa"
+        component={StudentsScreen}
         options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="qrcode" color={color} />,
+          tabBarLabel: 'Peserta Didik',
+          tabBarIcon: ({ color, size, focused }) => {
+            return <Icon name="list" size={size} color={focused ? color : Colors.disabled} />;
+          },
         }}
       />
       <Tab.Screen
-        name="Three"
+        name="Profil"
         component={Three}
         options={{
-          title: 'Tab Three',
-          tabBarIcon: ({ color }) => <TabBarIcon name="gear" color={color} />,
+          tabBarLabel: 'Pengaturan',
+          tabBarIcon: ({ color, size, focused }) => {
+            return <Icon name="user" size={size} color={focused ? color : Colors.disabled} />;
+          },
         }}
       />
     </Tab.Navigator>

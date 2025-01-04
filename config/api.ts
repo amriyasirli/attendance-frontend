@@ -1,26 +1,46 @@
-import axios, { AxiosInstance } from 'axios';
-
+import axios, { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import * as SecureStore from 'expo-secure-store';
+import { useDispatch } from 'react-redux';
+import { deleteUserState } from 'redux/slices/userSlice';
 // Buat instance Axios
 const api: AxiosInstance = axios.create({
-    baseURL: process.env.EXPO_PUBLIC_URL_BASE, // Ganti dengan URL API Anda
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    timeout: 10000, // Timeout dalam milidetik
+  baseURL: process.env.EXPO_PUBLIC_URL_BASE, // Ganti dengan URL API Anda
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  withCredentials: true,
 });
 
 // Tambahkan interceptor untuk menyisipkan token
 api.interceptors.request.use(
-    async (config) => {
-        const token = 'e9e63d1e5429a3448a1a8f8fe305ae7a666fb375d700e38eeb97f8275fbd434d'; // Ganti dengan cara Anda mendapatkan token (misalnya dari state atau storage)
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
-        }
-        return config;
-    },
-    (error) => {
-        return Promise.reject(error);
+  async (config: InternalAxiosRequestConfig<any>) => {
+    const token = SecureStore.getItem('token') || null; // example 123
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
+    return config;
+  },
+  (error: AxiosError<any>) => {
+    return Promise.reject(error);
+  }
+);
+
+api.interceptors.response.use(
+  (response: AxiosResponse<any>) => response,
+  async (error: AxiosError<any>) => {
+    const originalRequest = error.config as InternalAxiosRequestConfig;
+    if (error.response?.status === 403) {
+      try {
+        SecureStore.deleteItemAsync('user');
+        SecureStore.deleteItemAsync('token');
+        return api(originalRequest);
+      } catch (error: any) {
+        console.log('Error: ', error.response.data);
+        return Promise.reject(error);
+      }
+    }
+    return Promise.reject(error);
+  }
 );
 
 export default api;

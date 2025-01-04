@@ -1,0 +1,15 @@
+export const homeStyles = {
+  container: 'flex-1 bg-white',
+  headerContainer: 'flex bg-primary',
+  userSection: 'flex-row items-center justify-between',
+  statisticSection: 'flex-row items-center justify-center m-4',
+  statisticWrapper: 'w-full flex-row py-2',
+  usernameWrapper: 'start-0 m-2 flex-1',
+  fullname: 'text-2xl text-white',
+  username: 'text-md text-gray-200',
+  card: 'flex-1 flex-row items-center justify-center gap-4',
+  counter: 'text-2xl font-bold text-slate-800',
+  label: 'text-md text-slate-300',
+  scrollView: 'bg-current',
+  recentText: 'm-4 text-text',
+};

@@ -1,15 +1,18 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Student } from 'types/students';
+import { createSlice } from '@reduxjs/toolkit';
 import * as SecureStore from 'expo-secure-store';
+import { User } from 'types/user';
 
 interface AuthState {
-  currentUser: Student | null;
+  currentUser: User | null;
+  token: string | null;
 }
 
 const userStorage = SecureStore.getItem('user');
+const token = SecureStore.getItem('token');
 
 const initialState: AuthState = {
   currentUser: userStorage ? JSON.parse(userStorage) : null,
+  token: token ?? null,
 };
 
 export const userSlice = createSlice({
@@ -22,6 +25,7 @@ export const userSlice = createSlice({
         SecureStore.setItem('token', action.payload.token);
       }
       state.currentUser = action.payload.currentUser;
+      state.token = action.payload.token;
       SecureStore.deleteItemAsync('user');
       SecureStore.setItem('user', JSON.stringify(action.payload.currentUser));
     },

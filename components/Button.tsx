@@ -1,22 +1,35 @@
-import { forwardRef } from 'react';
-import { Text, TouchableOpacity, TouchableOpacityProps, View } from 'react-native';
+import { StyleProp, StyleSheet, TextStyle, ViewStyle } from 'react-native';
+import React, { ComponentProps } from 'react';
+import { Button, ButtonProps } from 'react-native-paper';
+import { Colors } from 'constants/colors';
 
-type ButtonProps = {
-  title: string;
-} & TouchableOpacityProps;
+interface Props extends ButtonProps {
+  customStyle?: ViewStyle;
+  customLabelStyle?: StyleProp<TextStyle>;
+  title?: string;
+}
 
-export const Button = forwardRef<View, ButtonProps>(({ title, ...touchableProps }, ref) => {
+const CustomButton = ({ title, customStyle, customLabelStyle, ...rest }: Props) => {
   return (
-    <TouchableOpacity
-      ref={ref}
-      {...touchableProps}
-      className={`${styles.button} ${touchableProps.className}`}>
-      <Text className={styles.buttonText}>{title}</Text>
-    </TouchableOpacity>
+    <Button
+      icon={'file-document-edit-outline'}
+      style={[styles.buttonScan, customStyle]}
+      labelStyle={[styles.labelReg, customLabelStyle]}
+      contentStyle={styles.contentStyle}
+      mode="elevated"
+      {...rest}
+    />
   );
-});
-
-const styles = {
-  button: 'items-center bg-indigo-500 rounded-[28px] shadow-md p-4',
-  buttonText: 'text-white text-lg font-semibold text-center',
 };
+
+export default CustomButton;
+
+const styles = StyleSheet.create({
+  buttonScan: {
+    borderRadius: 8,
+    backgroundColor: Colors.primary,
+  },
+  labelScan: { color: Colors.text },
+  contentStyle: { paddingVertical: 6 },
+  labelReg: { color: Colors.white },
+});
