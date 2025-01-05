@@ -8,6 +8,7 @@ import { RootState } from 'redux/store';
 import ScanNisnScreen from 'screens/ScanNisnScreen/ScanNisnScreen';
 import StudentProfileScreen from 'screens/StudentProfileScreen/StudentProfileScreen';
 import { RootStackParamList } from 'types/authStack';
+import RfidScanScreen from 'screens/RfidScanScreen/RfidScanScreen';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -22,6 +23,7 @@ export default function RootStack() {
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
             <Stack.Screen name="ScanNisn" component={ScanNisnScreen} />
             <Stack.Screen name="StudentProfil" component={StudentProfileScreen} />
+            <Stack.Screen name="RfidScan" component={RfidScanScreen} />
           </>
         ) : (
           <Stack.Screen name="SignIn" component={SignIn} />

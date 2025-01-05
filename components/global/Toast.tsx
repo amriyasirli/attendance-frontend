@@ -10,8 +10,8 @@ const Toast = () => {
       positionValue={10}
       showProgressBar={false}
       showCloseIcon={false}
-      duration={2500}
-      animationStyle={'zoomInOut'}
+      duration={2000}
+      animationStyle={'upInUpOut'}
       textStyle={styles.toastText}
     />
   );

@@ -20,7 +20,7 @@ const Header = () => {
       <List.Item
         title="Welcome back"
         description={`Hello, ${currentUser?.fullname?.split(' ')[0]}!`}
-        titleStyle={{ color: Colors.white, fontSize: 12, fontFamily: 'Poppins-Thin' }}
+        titleStyle={{ color: Colors.white, fontSize: 12, fontFamily: 'Roboto-Regular' }}
         descriptionStyle={{ color: Colors.grey, fontSize: 18, fontFamily: 'Poppins-Bold' }}
         rippleColor={Colors.primary}
         onPress={(Pressed) => navigation.navigate('Profil')}

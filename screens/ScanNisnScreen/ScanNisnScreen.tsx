@@ -1,4 +1,5 @@
 import { StackNavigationProp } from '@react-navigation/stack';
+import CustomButton from 'components/Button';
 import Loader from 'components/global/Loader';
 import { Overlay } from 'components/Scanner/Overlay';
 import { CameraView, useCameraPermissions } from 'expo-camera';
@@ -23,17 +24,14 @@ export default function ScanNisnScreen({
     return (
       <View style={styles.container}>
         <Text style={styles.message}>We need your permission to show the camera</Text>
-        <Button
-          mode="contained"
-          style={{
-            borderRadius: 8,
+        <CustomButton
+          customStyle={{
+            marginHorizontal: 32,
           }}
-          contentStyle={{
-            paddingVertical: 8,
-          }}
+          icon={'camera-outline'}
           onPress={requestPermission}>
           Izinkan Kamera
-        </Button>
+        </CustomButton>
       </View>
     );
   }
@@ -63,6 +61,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+    // padding: 32,
   },
   message: {
     textAlign: 'center',

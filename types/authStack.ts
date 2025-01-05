@@ -10,6 +10,7 @@ export type RootStackParamList = {
   StudentProfil: {
     nisn: string;
   };
+  RfidScan: undefined;
   Modal: undefined;
 };
 export type TabNavigatorStackParamList = {

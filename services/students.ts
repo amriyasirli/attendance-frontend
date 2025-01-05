@@ -22,6 +22,16 @@ export const fetchStudents = async (): Promise<Student[]> => {
   return response.data;
 };
 
+export const fetchDataAttendance = async () => {
+  const response = await api.get('/attendancerecords');
+  return response.data;
+};
+
+export const createRecord = async (payload: any) => {
+  const response = await api.post(`/attendancerecords`, payload);
+  return response;
+};
+
 export const getStudentByNisn = async (nisn: string): Promise<Student> => {
   const response = await api.get<Student>(`/students/${nisn}`);
   return response.data;
